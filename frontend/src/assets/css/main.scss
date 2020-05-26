@@ -1,0 +1,105 @@
+@import "../../../node_modules/bootstrap/scss/bootstrap.scss";
+
+// Mixins
+@mixin flex-center($align: center, $justify: center) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+}
+
+$primary:       $teal ;
+$secondary:     $gray-600 !default;
+$success:       $green !default;
+$info:          $cyan !default;
+$warning:       $yellow !default;
+$danger:        $red !default;
+$light:         $gray-100 !default;
+$dark:          $gray-800 !default;
+
+/* Layout */
+#app-layout {
+  display: grid;
+  min-height: 100vh;
+  grid-template-areas:
+    "header header header"
+    "side main main";
+  // grid-template-columns:  1fr 1fr;
+  grid-template-rows: 60px 90vh;
+  position: relative;
+}
+
+/* Header */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  height: 100%;
+  background-color: #fafafa;
+  grid-area: header;
+  @include flex-center();
+}
+
+/* Side Content */
+.side-content {
+  grid-area: side;
+}
+
+/* Main Content */
+.main-content {
+  grid-area: main;
+  position: relative;
+  /* Chat */
+  .chat-container {
+    height: calc(100% - 80px);
+    overflow-y: scroll;
+    position: relative;
+    background-color: #ebebeb;
+    padding: 1rem 0;
+    @include flex-center(flex-start);
+
+    .chat-messages {
+      width: 90%;
+      height: 100%;
+
+      .chat-item {
+        padding: 1rem;
+        background-color: $light;
+        margin: 5px 0;
+        max-width: 500px;
+        min-width: 100px;
+        border-radius: 20px;
+        border-top-left-radius: 0;
+
+        &.sender {
+          margin-left: auto;
+          background-color: rgb(203, 224, 236);
+          border-top-left-radius: 20px;
+          border-bottom-right-radius: 0;
+        }
+      }
+      .broadcast {
+        padding: 0.5rem;
+        border-radius: 20px;
+        background-color: #e7e7e7;
+        color: #8b8b8b;
+        text-align: center;
+      }
+    }
+  }
+  .chat-input {
+    position: sticky;
+    bottom: 0;
+    right: 0;
+    height: 80px;
+    background-color: #fafafa;
+    width: 100%;
+    // padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    form {
+      width: 90%;
+    }
+  }
+}

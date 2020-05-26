@@ -1,0 +1,48 @@
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+/* Layout */
+
+#app-layout{
+  display: grid;
+  min-height: 100vh;
+  grid-gap: 1rem;
+  grid-template-areas: 
+    "header header header"
+    "side main main"
+    "side main main"
+  ;
+  grid-template-rows: 10vh auto;
+  position: relative;
+}
+
+/* Header */
+.header{
+  height:100%; 
+  display:flex;
+  align-items:center;
+  background-color :#f4f4f4;
+  grid-area: header;
+}
+
+/* Side Content */
+.side-content{
+  grid-area: side;
+}
+
+/* Main Content */
+.main-content{
+  grid-area: main;
+}
+
+/* Chat */
+.chat-container{
+  /* min-height: 90vh; */
+  position: relative;
+  padding-bottom: 2em ;
+}
+
+.chat-input{
+  position: fixed;
+  bottom: 0;
+  /* width: 100%; */
+}
