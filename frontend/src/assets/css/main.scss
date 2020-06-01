@@ -1,4 +1,12 @@
-@import "../../../node_modules/bootstrap/scss/bootstrap.scss";
+@use "sass:map";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+$theme-colors: (
+  primary: $teal,
+);
+
+@import "~bootstrap/scss/bootstrap.scss";
 
 // Mixins
 @mixin flex-center($align: center, $justify: center) {
@@ -7,24 +15,21 @@
   justify-content: $justify;
 }
 
-$primary:       $teal ;
-$secondary:     $gray-600 !default;
-$success:       $green !default;
-$info:          $cyan !default;
-$warning:       $yellow !default;
-$danger:        $red !default;
-$light:         $gray-100 !default;
-$dark:          $gray-800 !default;
-
+#root{
+  background-color: $gray-300;
+}
 /* Layout */
 #app-layout {
+  margin: 0 auto;
   display: grid;
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 813px;
+  max-width: 1440px;
   grid-template-areas:
     "header header header"
     "side main main";
-  // grid-template-columns:  1fr 1fr;
-  grid-template-rows: 60px 90vh;
+  grid-template-columns: 300px 1fr 1fr;
+  grid-template-rows: 60px calc(100vh - 60px);
   position: relative;
 }
 
@@ -36,12 +41,28 @@ $dark:          $gray-800 !default;
   height: 100%;
   background-color: #fafafa;
   grid-area: header;
-  @include flex-center();
+  display: grid;
+  grid-template-columns: 300px 2fr;
+
+  .header-left{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+  }
+  .header-right{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+  }
 }
 
 /* Side Content */
 .side-content {
   grid-area: side;
+  height: 100%;
+  background-color: $gray-100;
 }
 
 /* Main Content */
@@ -53,13 +74,14 @@ $dark:          $gray-800 !default;
     height: calc(100% - 80px);
     overflow-y: scroll;
     position: relative;
-    background-color: #ebebeb;
+    background-color: $gray-200;
     padding: 1rem 0;
     @include flex-center(flex-start);
 
     .chat-messages {
       width: 90%;
       height: 100%;
+      margin: 0 auto;
 
       .chat-item {
         padding: 1rem;
@@ -69,10 +91,12 @@ $dark:          $gray-800 !default;
         min-width: 100px;
         border-radius: 20px;
         border-top-left-radius: 0;
+        width: fit-content;
 
         &.sender {
           margin-left: auto;
-          background-color: rgb(203, 224, 236);
+          background-color: map-get($theme-colors , "primary" ); 
+          color: $white;
           border-top-left-radius: 20px;
           border-bottom-right-radius: 0;
         }
@@ -80,8 +104,8 @@ $dark:          $gray-800 !default;
       .broadcast {
         padding: 0.5rem;
         border-radius: 20px;
-        background-color: #e7e7e7;
-        color: #8b8b8b;
+        background-color: $gray-300;
+        color: $gray-500;
         text-align: center;
       }
     }

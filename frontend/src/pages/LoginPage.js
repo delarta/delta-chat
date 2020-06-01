@@ -7,25 +7,52 @@ import {
   Form,
   FormGroup,
   Label,
+  Alert,
 } from "reactstrap";
 import { useHistory } from "react-router-dom";
 
+import axios from "axios";
+
 export default function LoginPage() {
-  const [username, setUsername] = useState("");
-  const [room, setRoom] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setErrorMsg] = useState({
+    status: false,
+    message: "",
+  });
+  const urlAPI = process.env.REACT_APP_APIURL;
 
   const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!username || !room) {
-      return alert("Username or room cannot be empty!");
+    if (!email || !password) {
+      return setErrorMsg({
+        status: true,
+        message: "Email or password cannot be empty!",
+      });
     }
 
-    localStorage.setItem("userdata", JSON.stringify({username, room}))
-
-    history.push(`/`);
+    axios({
+      url: `${urlAPI}user/login`,
+      method: "POST",
+      data: {
+        email,
+        password,
+      },
+    })
+      .then((res) => {
+        localStorage.setItem("userdata", JSON.stringify(res.data.data));
+        history.push(`/`);
+      })
+      .catch((err) => {
+        console.log(err.response);
+        setErrorMsg({
+          status: true,
+          message: err.response.data.data,
+        });
+      });
   };
 
   return (
@@ -41,22 +68,32 @@ export default function LoginPage() {
         <CardBody>
           <h1>Login</h1>
           <Form onSubmit={handleSubmit}>
+            <Alert
+              color="danger"
+              isOpen={error.status}
+              toggle={() => setErrorMsg({ status: false, message: "" })}
+              fade={false}
+            >
+              {error.message}
+            </Alert>
             <FormGroup>
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
-                value={username}
-                id="username"
+                value={email}
+                id="email"
+                type="email"
                 placeholder="eg: MickeyMouse"
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </FormGroup>
             <FormGroup>
-              <Label htmlFor="room">Room</Label>
+              <Label htmlFor="password">Password</Label>
               <Input
-                value={room}
-                id="room"
+                value={password}
+                id="password"
+                type="password"
                 placeholder="eg: Serious Discussion"
-                onChange={(e) => setRoom(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </FormGroup>
             <Button block color="primary">
